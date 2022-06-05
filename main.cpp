@@ -10,6 +10,8 @@
 
 #include <unistd.h>
 
+#include <cairo/cairo-xcb.h>
+
 #define WID 512
 #define HEI 512
 
@@ -78,7 +80,7 @@ int main()
         exit(0);
     }
 
-    info.shmid = shmget(IPC_PRIVATE, WID * HEI * 4, IPC_CREAT | 0777);
+    info.shmid = shmget(IPC_PRIVATE, WID * HEI * 4, IPC_CREAT | 0600);
     info.shmaddr = static_cast<uint8_t *>(shmat(info.shmid, 0, 0));
 
     info.shmseg = xcb_generate_id(connection);
@@ -97,12 +99,23 @@ int main()
         info.shmseg,
         0);
 
+    // Cairo stuff
+    auto stride = cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, WID);
+    auto s = cairo_image_surface_create_for_data(
+        info.shmaddr, CAIRO_FORMAT_ARGB32, WID, HEI, stride);
+    auto cr = cairo_create(s);
+
     int i = 0;
     while (1)
     {
         usleep(10000);
 
-        data[i] = 0xFFFFFF;
+        // data[i] = 0xFFFFFF;
+        // Cairo stuff
+        cairo_set_source_rgb(cr, 0.5, 0.5, 1);
+        cairo_rectangle(cr, i % 20, i % 20, 100, 100);
+        cairo_fill(cr);
+
         i++;
 
         xcb_copy_area(

@@ -14,6 +14,8 @@ pkg_check_modules(LIBXCB_XKB REQUIRED xcb-xkb)
 pkg_check_modules(LIBXCB_IMAGE REQUIRED xcb-image)
 pkg_check_modules(LIBXKB_COMMON REQUIRED xkbcommon)
 pkg_check_modules(LIBXKB_COMMON_X11 REQUIRED xkbcommon-x11)
+pkg_check_modules(CAIRO REQUIRED cairo)
+pkg_check_modules(PANGO REQUIRED pangocairo pangoft2)
 
 # message(FATAL_ERROR "rene ${LIBXCB_SHM}")
 
@@ -30,4 +32,6 @@ target_link_libraries(xcb-shm-test
         ${LIBXCB_IMAGE_LIBRARIES}
         ${LIBXKB_COMMON_LIBRARIES}
         ${LIBXKB_COMMON_X11_LIBRARIES}
+        ${CAIRO_LIBRARIES}
+        ${PANGO_LIBRARIES}
 )
