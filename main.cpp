@@ -113,7 +113,7 @@ int main()
         // data[i] = 0xFFFFFF;
         // Cairo stuff
         cairo_set_source_rgb(cr, 0.5, 0.5, 1);
-        cairo_rectangle(cr, i % 20, i % 20, 100, 100);
+        cairo_rectangle(cr, 20, 20, 100, 100);
         cairo_fill(cr);
 
         i++;
